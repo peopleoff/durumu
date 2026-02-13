@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
   },
+  ssr: false,
   css: ['~/assets/css/main.css'],
   app: {
     head: {
