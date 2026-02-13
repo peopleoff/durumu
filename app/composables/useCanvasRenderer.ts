@@ -2,12 +2,37 @@ import type { Point, PolarPosition, BeamCone, FogAdd, ArenaDimensions, BeamType 
 import { ARENA, BEAM_COLORS } from '~/utils/constants'
 import { polarToCartesian } from '~/utils/geometry'
 
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => resolve(img)
+    img.onerror = () => reject(new Error(`Failed to load image: ${src}`))
+    img.src = src
+  })
+}
+
 export function useCanvasRenderer(canvasRef: Ref<HTMLCanvasElement | null>) {
   let ctx: CanvasRenderingContext2D | null = null
   let cssSize = 0
+  let platformImg: HTMLImageElement | null = null
+  let bossImg: HTMLImageElement | null = null
 
   function init() {
     ctx = canvasRef.value?.getContext('2d') ?? null
+  }
+
+  async function loadImages() {
+    try {
+      const [platform, boss] = await Promise.all([
+        loadImage('/images/platform.png'),
+        loadImage('/images/boss.png'),
+      ])
+      platformImg = platform
+      bossImg = boss
+    }
+    catch {
+      // Images not found -- fall back to programmatic rendering
+    }
   }
 
   function getArenaDimensions(): ArenaDimensions {
@@ -46,19 +71,49 @@ export function useCanvasRenderer(canvasRef: Ref<HTMLCanvasElement | null>) {
     if (!ctx) return
     const { center, radius } = dims
 
-    // Background
+    // Background fill
     ctx.fillStyle = ARENA.BACKGROUND
     ctx.fillRect(0, 0, dims.canvasSize, dims.canvasSize)
 
-    // Platform circle
-    const grad = ctx.createRadialGradient(center.x, center.y, 0, center.x, center.y, radius)
-    grad.addColorStop(0, '#181830')
-    grad.addColorStop(0.85, ARENA.PLATFORM_COLOR)
-    grad.addColorStop(1, ARENA.PLATFORM_EDGE)
-    ctx.beginPath()
-    ctx.arc(center.x, center.y, radius, 0, Math.PI * 2)
-    ctx.fillStyle = grad
-    ctx.fill()
+    if (platformImg) {
+      // Draw platform image clipped to circle
+      ctx.save()
+      ctx.beginPath()
+      ctx.arc(center.x, center.y, radius, 0, Math.PI * 2)
+      ctx.clip()
+
+      // Fit image to cover the circle area
+      const imgAspect = platformImg.width / platformImg.height
+      const diameter = radius * 2
+      let drawW: number, drawH: number
+      if (imgAspect > 1) {
+        drawH = diameter
+        drawW = diameter * imgAspect
+      }
+      else {
+        drawW = diameter
+        drawH = diameter / imgAspect
+      }
+      ctx.drawImage(
+        platformImg,
+        center.x - drawW / 2,
+        center.y - drawH / 2,
+        drawW,
+        drawH,
+      )
+      ctx.restore()
+    }
+    else {
+      // Fallback: programmatic platform circle
+      const grad = ctx.createRadialGradient(center.x, center.y, 0, center.x, center.y, radius)
+      grad.addColorStop(0, '#181830')
+      grad.addColorStop(0.85, ARENA.PLATFORM_COLOR)
+      grad.addColorStop(1, ARENA.PLATFORM_EDGE)
+      ctx.beginPath()
+      ctx.arc(center.x, center.y, radius, 0, Math.PI * 2)
+      ctx.fillStyle = grad
+      ctx.fill()
+    }
 
     // Edge ring
     ctx.beginPath()
@@ -79,8 +134,49 @@ export function useCanvasRenderer(canvasRef: Ref<HTMLCanvasElement | null>) {
 
   function drawEye(center: Point, mousePos: Point, elapsed: number) {
     if (!ctx) return
-    const r = ARENA.EYE_RADIUS
     const pulse = 1 + Math.sin(elapsed * 2) * 0.05
+
+    if (bossImg) {
+      // Draw boss portrait at center
+      const bossSize = ARENA.EYE_RADIUS * 3.5
+      const halfSize = bossSize / 2
+
+      // Purple glow behind boss
+      ctx.save()
+      ctx.shadowColor = '#6622aa'
+      ctx.shadowBlur = 25 * pulse
+      ctx.beginPath()
+      ctx.arc(center.x, center.y, halfSize, 0, Math.PI * 2)
+      ctx.fillStyle = 'rgba(26, 10, 42, 0.8)'
+      ctx.fill()
+      ctx.restore()
+
+      // Clip to circle and draw boss image
+      ctx.save()
+      ctx.beginPath()
+      ctx.arc(center.x, center.y, halfSize, 0, Math.PI * 2)
+      ctx.clip()
+      ctx.drawImage(
+        bossImg,
+        center.x - halfSize,
+        center.y - halfSize,
+        bossSize,
+        bossSize,
+      )
+      ctx.restore()
+
+      // Circular border ring
+      ctx.beginPath()
+      ctx.arc(center.x, center.y, halfSize, 0, Math.PI * 2)
+      ctx.strokeStyle = '#4a2a6a'
+      ctx.lineWidth = 2
+      ctx.stroke()
+
+      return
+    }
+
+    // Fallback: programmatic eye
+    const r = ARENA.EYE_RADIUS
 
     // Outer glow
     ctx.save()
@@ -300,7 +396,6 @@ export function useCanvasRenderer(canvasRef: Ref<HTMLCanvasElement | null>) {
 
   function drawYellowPlayerIndicator(dims: ArenaDimensions, playerPos: Point, isInCone: boolean) {
     if (!ctx) return
-    const colors = BEAM_COLORS.yellow
 
     // Player dot (larger for yellow mode since player position matters more)
     const size = 10
@@ -325,6 +420,7 @@ export function useCanvasRenderer(canvasRef: Ref<HTMLCanvasElement | null>) {
 
   return {
     init,
+    loadImages,
     resizeCanvas,
     getArenaDimensions,
     clear,

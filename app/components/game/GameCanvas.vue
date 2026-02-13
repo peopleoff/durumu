@@ -204,6 +204,7 @@ function setupCanvas() {
 
 onMounted(() => {
   setupCanvas()
+  renderer.loadImages()
   initializeBeam()
 
   const resizeObserver = new ResizeObserver(() => {
