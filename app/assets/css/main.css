@@ -1,0 +1,112 @@
+:root {
+  --bg-primary: #0a0a12;
+  --bg-secondary: #12121e;
+  --bg-card: #1a1a2e;
+  --bg-card-hover: #222240;
+  --text-primary: #e0e0e8;
+  --text-secondary: #808098;
+  --text-muted: #505068;
+  --border-color: #2a2a45;
+
+  --red-solid: #ff2020;
+  --red-glow: rgba(255, 32, 32, 0.3);
+  --blue-solid: #2080ff;
+  --blue-glow: rgba(32, 128, 255, 0.3);
+  --yellow-solid: #ffcc00;
+  --yellow-glow: rgba(255, 204, 0, 0.3);
+
+  --grade-s: #ffd700;
+  --grade-a: #00dd66;
+  --grade-b: #2080ff;
+  --grade-c: #ff8800;
+  --grade-f: #ff2020;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  outline: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.btn:hover {
+  background: var(--bg-card-hover);
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6c2bd9, #8b5cf6);
+  border-color: #8b5cf6;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #7c3aed, #a78bfa);
+}
+
+.btn-red {
+  background: linear-gradient(135deg, #991111, #cc2020);
+  border-color: var(--red-solid);
+  color: #fff;
+}
+
+.btn-blue {
+  background: linear-gradient(135deg, #113399, #2060cc);
+  border-color: var(--blue-solid);
+  color: #fff;
+}
+
+.btn-yellow {
+  background: linear-gradient(135deg, #997700, #ccaa00);
+  border-color: var(--yellow-solid);
+  color: #fff;
+}
+
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+}
