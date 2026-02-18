@@ -72,6 +72,9 @@
       <button class="btn btn-lg start-btn" :class="`btn-${beam}`" @click="$emit('start')">
         Don't Disappoint Peg
       </button>
+      <button class="btn back-btn" @click="$emit('back')">
+        Back to Menu
+      </button>
     </div>
   </div>
 </template>
@@ -86,6 +89,7 @@ const props = defineProps<{
 
 defineEmits<{
   start: []
+  back: []
 }>()
 
 const beamInfo = computed(() => BEAM_COLORS[props.beam])
@@ -211,5 +215,20 @@ const icon = computed(() => {
   width: 100%;
   font-size: 1.1rem;
   padding: 14px;
+}
+
+.back-btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  font-size: 0.9rem;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.back-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
 }
 </style>

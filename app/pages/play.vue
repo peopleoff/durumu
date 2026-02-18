@@ -13,6 +13,7 @@
         v-if="phase === 'instructions'"
         :beam="assignedBeam"
         @start="startGame"
+        @back="goToMenu"
       />
 
       <!-- Game area -->
