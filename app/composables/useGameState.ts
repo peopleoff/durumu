@@ -8,7 +8,7 @@ export function useGameState() {
 
   function assignRandomBeam() {
     const beams: BeamType[] = ['red', 'blue', 'yellow']
-    assignedBeam.value = beams[Math.floor(Math.random() * beams.length)]
+    assignedBeam.value = beams[Math.floor(Math.random() * beams.length)]!
   }
 
   function selectBeam(beam: BeamType) {

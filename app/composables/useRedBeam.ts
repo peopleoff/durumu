@@ -13,6 +13,7 @@ export function useRedBeam() {
   const crimsonBlooms = ref(0)
   const allFogsKilled = ref(false)
   const damageFlash = ref(0)
+  const raidWipe = ref(false)
 
   function initialize() {
     const positions = generateSpreadPositions(3, 0.35, 0.8)
@@ -29,9 +30,11 @@ export function useRedBeam() {
     crimsonBlooms.value = 0
     allFogsKilled.value = false
     damageFlash.value = 0
+    raidWipe.value = false
   }
 
   function update(dt: number, coneAngle: number, elapsed: number) {
+    if (raidWipe.value) return
     cone.value.angle = coneAngle
 
     // Decay damage flash
@@ -58,12 +61,11 @@ export function useRedBeam() {
         }
       }
       else if (fog.revealed && !fog.killed) {
-        // Crimson Bloom! Beam moved off a revealed fog
+        // Crimson Bloom! Beam moved off a revealed fog — raid wipe
         crimsonBlooms.value++
         damageFlash.value = 1
-        // Fog re-hides but keeps its damage
-        fog.revealed = false
-        fog.revealedAt = null
+        raidWipe.value = true
+        return
       }
     }
 
@@ -103,5 +105,5 @@ export function useRedBeam() {
     }
   }
 
-  return { fogs, cone, crimsonBlooms, allFogsKilled, damageFlash, initialize, update, handleClicks, getScoreData }
+  return { fogs, cone, crimsonBlooms, allFogsKilled, damageFlash, raidWipe, initialize, update, handleClicks, getScoreData }
 }

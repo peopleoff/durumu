@@ -19,13 +19,11 @@ export function useYellowBeam() {
   const raidWipe = ref(false)
 
   let coneSpeed = GAME_CONFIGS.yellow.yellowConeSpeed
-  let coneDirection = 1
   let speedChangeTimer = 0
   let nextSpeedChange = 5 + Math.random() * 5
 
   function initialize(playerAngle?: number) {
     cone.value.angle = playerAngle ?? Math.random() * Math.PI * 2
-    coneDirection = Math.random() > 0.5 ? 1 : -1
     coneSpeed = GAME_CONFIGS.yellow.yellowConeSpeed
     timeInCone.value = 0
     timeOutOfCone.value = 0
@@ -55,7 +53,7 @@ export function useYellowBeam() {
     if (raidWipe.value) return
 
     // Auto-rotate cone
-    cone.value.angle = normalizeAngle(cone.value.angle + coneSpeed * coneDirection * dt)
+    cone.value.angle = normalizeAngle(cone.value.angle + coneSpeed * dt)
 
     // Periodically change speed/direction
     speedChangeTimer += dt
@@ -63,9 +61,6 @@ export function useYellowBeam() {
       speedChangeTimer = 0
       nextSpeedChange = 4 + Math.random() * 6
 
-      if (Math.random() < 0.3) {
-        coneDirection *= -1
-      }
       coneSpeed = randomBetween(0.25, 0.75)
     }
 

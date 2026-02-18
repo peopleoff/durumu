@@ -58,7 +58,18 @@ const router = useRouter()
 const { phase, assignedBeam, score } = gameState
 
 const gameKey = ref(0)
-const gameCanvasRef = ref<{ elapsed: number; hudData: Record<string, unknown>; warmupRemaining: number } | null>(null)
+interface HudData {
+  fogsKilled: number
+  crimsonBlooms: number
+  azureReveals: number
+  amberBursts: number
+  amberFogsKilled?: number
+  playerInCone: boolean
+  timeInCone: number
+  timeOutOfCone: number
+}
+
+const gameCanvasRef = ref<{ elapsed: number; hudData: HudData; warmupRemaining: number } | null>(null)
 
 const canvasElapsed = computed(() => gameCanvasRef.value?.elapsed ?? 0)
 const canvasHudData = computed(() => gameCanvasRef.value?.hudData ?? null)

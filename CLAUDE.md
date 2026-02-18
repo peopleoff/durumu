@@ -61,7 +61,7 @@ app/
 ### Yellow Beam — "Bright Light" (Tank role)
 - **Duration**: 50 seconds
 - **Goal**: Stay inside an auto-rotating cone while managing Amber Fog reveals
-- **Mechanic**: Beam spawns at the player's position, then auto-rotates independently (periodically reversing or changing speed). Time spent outside the cone accumulates damage. 2 hidden Amber Fogs (Heroic) are revealed when the cone sweeps over them — revealed fogs stay visible and must be clicked/tapped to kill before the cone passes. If a revealed fog leaves the cone alive, it triggers Burst of Amber (raid wipe = instant game over, F grade). Strategic positioning at start helps avoid fog reveals entirely.
+- **Mechanic**: Beam spawns at the player's position, then auto-rotates in one direction (periodically changing speed). Time spent outside the cone accumulates damage. 2 hidden Amber Fogs (Heroic) are revealed when the cone sweeps over them — revealed fogs stay visible and must be clicked/tapped to kill before the cone passes. If a revealed fog leaves the cone alive, it triggers Burst of Amber (raid wipe = instant game over, F grade). Strategic positioning at start helps avoid fog reveals entirely.
 - **S-grade**: 95%+ uptime inside the cone, 0 fogs revealed
 
 ## Commands

@@ -8,17 +8,18 @@
       <div class="instructions">
         <template v-if="beam === 'red'">
           <div class="controls-hint">Use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrow keys to move around the arena.</div>
+          <div class="controls-hint">Click on the fogs to attack them.</div>
           <div class="instruction-step">
             <span class="step-num">1</span>
             <p><strong>Sweep</strong> your beam around the arena to find 3 hidden <span class="highlight-red">Crimson Fogs</span>.</p>
           </div>
           <div class="instruction-step">
             <span class="step-num">2</span>
-            <p>Once a fog is revealed, <strong>hold the beam steady</strong> on it until its health reaches zero.</p>
+            <p>Once a fog is revealed, <strong>click/tap it</strong> to deal damage. It takes <strong>3 hits</strong> to kill each fog.</p>
           </div>
           <div class="instruction-step">
             <span class="step-num">3</span>
-            <p><strong>Do NOT</strong> move the beam off a revealed fog! This triggers <span class="highlight-red">Crimson Bloom</span> (raid wipe).</p>
+            <p><strong>Keep the beam on it</strong> while clicking — moving the beam off a revealed fog triggers <span class="highlight-red">Crimson Bloom</span> (raid wipe).</p>
           </div>
           <div class="instruction-step">
             <span class="step-num">4</span>
@@ -48,6 +49,7 @@
 
         <template v-if="beam === 'yellow'">
           <div class="controls-hint">Use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrow keys to move around the arena.</div>
+          <div class="controls-hint">Click on the fogs to attack them.</div>
           <div class="instruction-step">
             <span class="step-num">1</span>
             <p>The <span class="highlight-yellow">yellow cone</span> moves on its own, rotating around the arena.</p>
@@ -62,7 +64,7 @@
           </div>
           <div class="instruction-step">
             <span class="step-num">4</span>
-            <p><strong>Heroic:</strong> 2 hidden <span class="highlight-yellow">Amber Fogs</span> lurk in the arena. If the cone reveals one, it triggers <span class="highlight-yellow">Burst of Amber</span> (raid wipe)!</p>
+            <p><strong>Heroic:</strong> 2 hidden <span class="highlight-yellow">Amber Fogs</span> lurk in the arena. If the cone reveals one, <strong>click/tap it quickly</strong> to kill it before the cone passes — if a revealed fog leaves the cone alive, it triggers <span class="highlight-yellow">Burst of Amber</span> (raid wipe)!</p>
           </div>
         </template>
       </div>

@@ -40,7 +40,7 @@ const redBeam = useRedBeam()
 const blueBeam = useBlueBeam()
 const yellowBeam = useYellowBeam()
 
-const warmupRemaining = ref(WARMUP.DURATION)
+const warmupRemaining = ref<number>(WARMUP.DURATION)
 let warmupTimer = 0
 let inWarmup = true
 
@@ -94,7 +94,7 @@ function update(dt: number) {
     case 'red':
       redBeam.update(dt, coneAngle, engine.elapsedTime.value)
       redBeam.handleClicks(input.consumeClicks(), dims)
-      if (redBeam.allFogsKilled.value) {
+      if (redBeam.raidWipe.value || redBeam.allFogsKilled.value) {
         finishGame()
       }
       break
@@ -271,9 +271,9 @@ onMounted(() => {
   if (gameState.selectedAvatar.value) {
     renderer.loadPlayerAvatar(gameState.selectedAvatar.value)
   }
-  initializeBeam()
   input.attach()
   input.initPosition(renderer.getArenaDimensions())
+  initializeBeam()
 
   const resizeObserver = new ResizeObserver(() => {
     setupCanvas()
