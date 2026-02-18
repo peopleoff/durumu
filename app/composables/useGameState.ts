@@ -4,6 +4,7 @@ export function useGameState() {
   const phase = useState<GamePhase>('game-phase', () => 'menu')
   const assignedBeam = useState<BeamType | null>('assigned-beam', () => null)
   const score = useState<GameScore | null>('game-score', () => null)
+  const selectedAvatar = useState<string | null>('selected-avatar', () => null)
 
   function assignRandomBeam() {
     const beams: BeamType[] = ['red', 'blue', 'yellow']
@@ -18,10 +19,6 @@ export function useGameState() {
     phase.value = 'instructions'
   }
 
-  function startCountdown() {
-    phase.value = 'countdown'
-  }
-
   function startPlaying() {
     phase.value = 'playing'
   }
@@ -29,6 +26,12 @@ export function useGameState() {
   function showResults(gameScore: GameScore) {
     score.value = gameScore
     phase.value = 'results'
+    const { saveBest } = useLocalScores()
+    saveBest(gameScore)
+  }
+
+  function selectAvatar(src: string) {
+    selectedAvatar.value = src
   }
 
   function returnToMenu() {
@@ -41,10 +44,11 @@ export function useGameState() {
     phase,
     assignedBeam,
     score,
+    selectedAvatar,
     assignRandomBeam,
     selectBeam,
+    selectAvatar,
     startInstructions,
-    startCountdown,
     startPlaying,
     showResults,
     returnToMenu,

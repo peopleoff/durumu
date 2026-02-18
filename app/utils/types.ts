@@ -1,6 +1,6 @@
 export type BeamType = 'red' | 'blue' | 'yellow'
 
-export type GamePhase = 'menu' | 'instructions' | 'countdown' | 'playing' | 'results'
+export type GamePhase = 'menu' | 'instructions' | 'playing' | 'results'
 
 export interface Point {
   x: number
@@ -14,7 +14,7 @@ export interface PolarPosition {
 
 export interface FogAdd {
   id: string
-  type: 'crimson' | 'azure'
+  type: 'crimson' | 'azure' | 'amber'
   position: PolarPosition
   revealed: boolean
   health: number
@@ -36,10 +36,20 @@ export interface GameScore {
   fogsKilled: number
   crimsonBlooms: number
   azureReveals: number
+  amberBursts: number
+  amberFogsKilled: number
   timeInCone: number
   timeOutOfCone: number
   grade: 'S' | 'A' | 'B' | 'C' | 'F'
   details: string[]
+}
+
+export interface ScoreEvent {
+  id: number
+  text: string
+  points: number
+  positive: boolean
+  timestamp: number
 }
 
 export interface ArenaDimensions {

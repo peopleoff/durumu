@@ -12,25 +12,27 @@
       <InstructionModal
         v-if="phase === 'instructions'"
         :beam="assignedBeam"
-        @start="startCountdown"
+        @start="startGame"
       />
 
       <!-- Game area -->
-      <div v-show="phase === 'countdown' || phase === 'playing'" class="game-area">
+      <div v-show="phase === 'playing'" class="game-area">
         <GameCanvas
           ref="gameCanvasRef"
           :key="gameKey"
           :beam="assignedBeam"
-          :phase="gameCanvasPhase"
           @complete="onCanvasEvent"
         />
         <GameHUD
-          v-if="phase === 'playing' && canvasHudData"
+          v-if="canvasHudData"
           :beam="assignedBeam"
           :elapsed="canvasElapsed"
+          :warmup-remaining="canvasWarmupRemaining"
           :fogs-killed="canvasHudData.fogsKilled"
           :crimson-blooms="canvasHudData.crimsonBlooms"
           :azure-reveals="canvasHudData.azureReveals"
+          :amber-bursts="canvasHudData.amberBursts"
+          :amber-fogs-killed="canvasHudData.amberFogsKilled"
           :player-in-cone="canvasHudData.playerInCone"
           :time-in-cone="canvasHudData.timeInCone"
           :time-out-of-cone="canvasHudData.timeOutOfCone"
@@ -56,15 +58,11 @@ const router = useRouter()
 const { phase, assignedBeam, score } = gameState
 
 const gameKey = ref(0)
-const gameCanvasRef = ref<{ elapsed: Ref<number>; hudData: ComputedRef<Record<string, unknown>> } | null>(null)
+const gameCanvasRef = ref<{ elapsed: number; hudData: Record<string, unknown>; warmupRemaining: number } | null>(null)
 
-const canvasElapsed = computed(() => gameCanvasRef.value?.elapsed?.value ?? 0)
-const canvasHudData = computed(() => gameCanvasRef.value?.hudData?.value ?? null)
-
-const gameCanvasPhase = computed(() => {
-  if (phase.value === 'countdown') return 'countdown' as const
-  return 'playing' as const
-})
+const canvasElapsed = computed(() => gameCanvasRef.value?.elapsed ?? 0)
+const canvasHudData = computed(() => gameCanvasRef.value?.hudData ?? null)
+const canvasWarmupRemaining = computed(() => gameCanvasRef.value?.warmupRemaining ?? 0)
 
 // Redirect if no beam selected
 onMounted(() => {
@@ -73,16 +71,11 @@ onMounted(() => {
   }
 })
 
-function startCountdown() {
-  gameState.startCountdown()
+function startGame() {
+  gameState.startPlaying()
 }
 
 function onCanvasEvent(data: Record<string, unknown>) {
-  if (data.action === 'countdown-done') {
-    gameState.startPlaying()
-    return
-  }
-
   if (data.action === 'game-done') {
     const gameScore = scoring.calculateScore(data as Parameters<typeof scoring.calculateScore>[0])
     gameState.showResults(gameScore)
@@ -107,13 +100,14 @@ function goToMenu() {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 60px 16px 48px;
+  background: url('~/assets/images/background.png') center / cover no-repeat;
 }
 
 .game-area {
   position: relative;
   width: 100%;
-  max-width: 700px;
+  max-width: 900px;
   aspect-ratio: 1;
   display: flex;
   align-items: center;

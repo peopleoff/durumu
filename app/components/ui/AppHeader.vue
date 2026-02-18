@@ -4,7 +4,7 @@
       <span class="brand-icon">👁</span>
       <div class="brand-text">
         <span class="brand-title">Durumu</span>
-        <span class="brand-subtitle">Light Spectrum Trainer</span>
+        <span class="brand-subtitle">Peg's Mandatory Practice</span>
       </div>
     </NuxtLink>
   </header>

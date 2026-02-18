@@ -47,22 +47,22 @@ app/
 ## Game Mechanics
 
 ### Red Beam — "Infrared Light" (Melee DPS role)
-- **Duration**: 60 seconds
+- **Duration**: 50 seconds
 - **Goal**: Sweep beam around arena to find and kill 3 hidden Crimson Fogs
-- **Mechanic**: Hold beam on a fog to drain its health (25 HP/sec). Moving beam off a revealed fog triggers a Crimson Bloom (penalty).
+- **Mechanic**: Hold beam on a fog to drain its health (25 HP/sec). Moving beam off a revealed fog triggers a Crimson Bloom (raid wipe). Phase ends early if all fogs are killed.
 - **S-grade**: 3 kills, 0 blooms, under 30 seconds
 
 ### Blue Beam — "Blue Rays" (Healer/Ranged role)
-- **Duration**: 45 seconds
-- **Goal**: Avoid revealing 3 hidden Azure Fogs while moving your beam
-- **Mechanic**: Hint flashes every 8 seconds briefly show fog locations. Each reveal adds penalty damage.
+- **Duration**: 50 seconds
+- **Goal**: Avoid revealing the single hidden Azure Fog
+- **Mechanic**: Hint flashes every 8 seconds briefly show the fog's location. Revealing it triggers Icy Grasp. Repeated reveals risk killing it, causing Flash Freeze (raid wipe). Stay relatively still once you find a safe spot.
 - **S-grade**: 0 reveals for the full duration
 
 ### Yellow Beam — "Bright Light" (Tank role)
-- **Duration**: 45 seconds
-- **Goal**: Stay inside an auto-rotating cone that changes speed/direction
-- **Mechanic**: Cone periodically reverses or changes speed. Time spent outside accumulates damage.
-- **S-grade**: 95%+ uptime inside the cone
+- **Duration**: 50 seconds
+- **Goal**: Stay inside an auto-rotating cone while managing Amber Fog reveals
+- **Mechanic**: Beam spawns at the player's position, then auto-rotates independently (periodically reversing or changing speed). Time spent outside the cone accumulates damage. 2 hidden Amber Fogs (Heroic) are revealed when the cone sweeps over them — revealed fogs stay visible and must be clicked/tapped to kill before the cone passes. If a revealed fog leaves the cone alive, it triggers Burst of Amber (raid wipe = instant game over, F grade). Strategic positioning at start helps avoid fog reveals entirely.
+- **S-grade**: 95%+ uptime inside the cone, 0 fogs revealed
 
 ## Commands
 

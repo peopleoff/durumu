@@ -1,6 +1,6 @@
-import type { FogAdd, BeamCone, PolarPosition } from '~/utils/types'
-import { GAME_CONFIGS } from '~/utils/constants'
-import { isPositionInCone, generateSpreadPositions } from '~/utils/geometry'
+import type { FogAdd, BeamCone, PolarPosition, Point, ArenaDimensions } from '~/utils/types'
+import { GAME_CONFIGS, SCORING } from '~/utils/constants'
+import { isPositionInCone, generateSpreadPositions, polarToCartesian, distance } from '~/utils/geometry'
 
 export function useRedBeam() {
   const fogs = ref<FogAdd[]>([])
@@ -56,12 +56,6 @@ export function useRedBeam() {
           fog.revealed = true
           fog.revealedAt = elapsed
         }
-        // Drain health
-        fog.health -= GAME_CONFIGS.red.fogHealthDrainRate * dt
-        if (fog.health <= 0) {
-          fog.health = 0
-          fog.killed = true
-        }
       }
       else if (fog.revealed && !fog.killed) {
         // Crimson Bloom! Beam moved off a revealed fog
@@ -76,6 +70,30 @@ export function useRedBeam() {
     allFogsKilled.value = fogs.value.every(f => f.killed)
   }
 
+  /** Process click/tap events to kill revealed fogs (3 clicks to kill). */
+  function handleClicks(clicks: Point[], dims: ArenaDimensions) {
+    const killRadius = SCORING.FOG_KILL_RADIUS
+    const damagePerClick = 34
+
+    for (const click of clicks) {
+      for (const fog of fogs.value) {
+        if (fog.killed || !fog.revealed) continue
+
+        const fogPos = polarToCartesian(dims.center, fog.position, dims.radius)
+        const dist = distance(click, fogPos)
+
+        if (dist <= killRadius) {
+          fog.health -= damagePerClick
+          if (fog.health <= 0) {
+            fog.health = 0
+            fog.killed = true
+          }
+          break // One click hits one fog
+        }
+      }
+    }
+  }
+
   function getScoreData(elapsed: number) {
     return {
       beam: 'red' as const,
@@ -85,5 +103,5 @@ export function useRedBeam() {
     }
   }
 
-  return { fogs, cone, crimsonBlooms, allFogsKilled, damageFlash, initialize, update, getScoreData }
+  return { fogs, cone, crimsonBlooms, allFogsKilled, damageFlash, initialize, update, handleClicks, getScoreData }
 }

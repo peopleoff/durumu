@@ -3,16 +3,24 @@
     <div class="card-icon">{{ icon }}</div>
     <h3 class="card-title">{{ beamInfo.name }}</h3>
     <p class="card-desc">{{ beamInfo.description }}</p>
-    <div class="card-role">{{ role }}</div>
+    <div class="card-best">
+      <template v-if="bestScore">
+        <span class="best-grade" :class="`grade-${bestScore.grade.toLowerCase()}`">{{ bestScore.grade }}</span>
+        <span class="best-detail">{{ bestDetail }}</span>
+      </template>
+      <span v-else class="best-detail">{{ defaultDetail }}</span>
+    </div>
   </button>
 </template>
 
 <script setup lang="ts">
 import type { BeamType } from '~/utils/types'
+import type { BestScore } from '~/composables/useLocalScores'
 import { BEAM_COLORS } from '~/utils/constants'
 
 const props = defineProps<{
   beam: BeamType
+  bestScore?: BestScore
 }>()
 
 defineEmits<{
@@ -34,6 +42,24 @@ const role = computed(() => {
     case 'red': return 'Melee DPS'
     case 'blue': return 'Healers / Ranged'
     case 'yellow': return 'Tanks'
+  }
+})
+
+const defaultDetail = computed(() => {
+  switch (props.beam) {
+    case 'red': return '0/3 fogs'
+    case 'blue': return '0 reveals'
+    case 'yellow': return '0% uptime'
+  }
+})
+
+const bestDetail = computed(() => {
+  const s = props.bestScore
+  if (!s) return ''
+  switch (props.beam) {
+    case 'red': return `${s.fogsKilled ?? 0}/3 fogs · ${s.totalTime.toFixed(1)}s`
+    case 'blue': return `${s.azureReveals ?? 0} reveals`
+    case 'yellow': return `${s.coneUptime ?? 0}% uptime`
   }
 })
 </script>
@@ -87,4 +113,27 @@ const role = computed(() => {
   border-radius: 12px;
   margin-top: 4px;
 }
+
+.card-best {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 0.8rem;
+}
+
+.best-grade {
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.best-detail {
+  color: var(--text-muted);
+}
+
+.grade-s { color: var(--grade-s); }
+.grade-a { color: var(--grade-a); }
+.grade-b { color: var(--grade-b); }
+.grade-c { color: var(--grade-c); }
+.grade-f { color: var(--grade-f); }
 </style>

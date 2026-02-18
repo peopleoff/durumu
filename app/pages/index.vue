@@ -6,24 +6,42 @@
       <div class="hero">
         <div class="hero-eye">👁</div>
         <h1 class="hero-title">Durumu the Forgotten</h1>
-        <p class="hero-subtitle">Light Spectrum Phase Trainer</p>
+        <p class="hero-subtitle">Peg's Mandatory Practice Session</p>
         <p class="hero-desc">
-          Practice the Colorblind Phase mechanics from Throne of Thunder.
-          Get assigned a beam color and master the mechanics.
+          Peg is tired of us wiping on Colorblind. This practice is not optional.
+          Do not disappoint him further.
         </p>
       </div>
 
-      <div class="beam-grid">
-        <BeamCard beam="red" @select="selectAndPlay('red')" />
-        <BeamCard beam="blue" @select="selectAndPlay('blue')" />
-        <BeamCard beam="yellow" @select="selectAndPlay('yellow')" />
+      <div class="avatar-section">
+        <p class="avatar-label">Choose Your Raider</p>
+        <div class="avatar-grid">
+          <button
+            v-for="avatar in AVATARS"
+            :key="avatar.id"
+            class="avatar-btn"
+            :class="{ selected: gameState.selectedAvatar.value === avatar.src }"
+            @click="gameState.selectAvatar(avatar.src)"
+          >
+            <img :src="avatar.src" :alt="avatar.id" class="avatar-img" />
+          </button>
+        </div>
+      </div>
+
+      <div class="beam-section">
+        <p class="section-label">Select a Beam</p>
+        <div class="beam-grid">
+          <BeamCard beam="red" :best-score="getBest('red')" @select="selectAndPlay('red')" />
+          <BeamCard beam="blue" :best-score="getBest('blue')" @select="selectAndPlay('blue')" />
+          <BeamCard beam="yellow" :best-score="getBest('yellow')" @select="selectAndPlay('yellow')" />
+        </div>
       </div>
 
       <div class="random-section">
         <button class="btn btn-primary btn-lg random-btn" @click="randomAndPlay">
-          Random Assignment
+          Random
         </button>
-        <p class="random-hint">Just like the real fight!</p>
+        <p class="random-hint">You don't get to pick in raid either.</p>
       </div>
     </main>
 
@@ -35,9 +53,19 @@
 
 <script setup lang="ts">
 import type { BeamType } from '~/utils/types'
+import { AVATARS } from '~/utils/constants'
 
 const gameState = useGameState()
 const router = useRouter()
+const { getBest } = useLocalScores()
+
+// Auto-select a random avatar if none is selected
+onMounted(() => {
+  if (!gameState.selectedAvatar.value) {
+    const idx = Math.floor(Math.random() * AVATARS.length)
+    gameState.selectAvatar(AVATARS[idx]!.src)
+  }
+})
 
 function selectAndPlay(beam: BeamType) {
   gameState.selectBeam(beam)
@@ -107,12 +135,86 @@ function randomAndPlay() {
   margin: 0 auto;
 }
 
+.avatar-section {
+  text-align: center;
+  padding-bottom: 28px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+}
+
+.section-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.avatar-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 56px);
+  gap: 10px;
+  justify-content: center;
+}
+
+.avatar-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  padding: 0;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  overflow: hidden;
+  opacity: 0.65;
+}
+
+.avatar-btn:hover {
+  border-color: rgba(136, 68, 204, 0.5);
+  transform: scale(1.1);
+  opacity: 0.9;
+}
+
+.avatar-btn.selected {
+  border-color: #aa66ee;
+  box-shadow: 0 0 16px rgba(136, 68, 204, 0.6), 0 0 4px rgba(170, 102, 238, 0.8);
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.beam-section {
+  text-align: center;
+  padding-bottom: 28px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+}
+
 .beam-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   width: 100%;
-  margin-bottom: 32px;
 }
 
 @media (max-width: 500px) {

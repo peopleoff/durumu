@@ -1,7 +1,24 @@
 import type { BeamType } from './types'
+import tank1 from '~/assets/images/tank-1.webp'
+import tank2 from '~/assets/images/tank-2.png'
+import healer1 from '~/assets/images/healer-1.webp'
+import healer2 from '~/assets/images/healer-2.webp'
+import dps1 from '~/assets/images/dps-1.webp'
+import dps2 from '~/assets/images/dps-2.webp'
+import dps3 from '~/assets/images/dps-3.webp'
+import dps4 from '~/assets/images/dps-4.webp'
+import dps5 from '~/assets/images/dps-5.webp'
+import dps6 from '~/assets/images/dps-6.webp'
+
+export const PLAYER = {
+  SPEED: 250,
+  MIN_DISTANCE: 0.05,
+  INITIAL_DISTANCE: 0.6,
+  INITIAL_ANGLE: 0,
+} as const
 
 export const ARENA = {
-  PADDING: 40,
+  PADDING: 10,
   BACKGROUND: '#0a0a12',
   PLATFORM_COLOR: '#141422',
   PLATFORM_EDGE: '#1e1e38',
@@ -17,7 +34,7 @@ export const BEAM_COLORS = {
     fog: '#ff4444',
     fogGlow: 'rgba(255, 68, 68, 0.4)',
     name: 'Infrared Light',
-    description: 'Find and eliminate Crimson Fogs',
+    description: 'Find the fogs. Kill the fogs. Don\'t bloom.',
   },
   blue: {
     solid: '#2080ff',
@@ -26,16 +43,16 @@ export const BEAM_COLORS = {
     fog: '#4488ff',
     fogGlow: 'rgba(68, 136, 255, 0.4)',
     name: 'Blue Rays',
-    description: 'Avoid revealing Azure Fogs',
+    description: 'Just... don\'t touch it. Please.',
   },
   yellow: {
     solid: '#ffcc00',
     cone: 'rgba(255, 204, 0, 0.22)',
     coneEdge: 'rgba(255, 204, 0, 0.5)',
-    fog: '#ffdd44',
-    fogGlow: 'rgba(255, 221, 68, 0.4)',
+    fog: '#ffaa00',
+    fogGlow: 'rgba(255, 170, 0, 0.4)',
     name: 'Bright Light',
-    description: 'Follow the moving cone',
+    description: 'Stay in the cone. How hard is that?',
   },
 } as const
 
@@ -47,24 +64,67 @@ export const GAME_CONFIGS: Record<BeamType, {
   yellowConeSpeed: number
 }> = {
   red: {
-    phaseDuration: 60,
+    phaseDuration: 50,
     coneWidth: Math.PI / 4.5,
     fogCount: 3,
     fogHealthDrainRate: 25,
     yellowConeSpeed: 0,
   },
   blue: {
-    phaseDuration: 45,
+    phaseDuration: 50,
     coneWidth: Math.PI / 4,
-    fogCount: 3,
+    fogCount: 1,
     fogHealthDrainRate: 0,
     yellowConeSpeed: 0,
   },
   yellow: {
-    phaseDuration: 45,
+    phaseDuration: 50,
     coneWidth: Math.PI / 3.5,
-    fogCount: 0,
+    fogCount: 2,
     fogHealthDrainRate: 0,
     yellowConeSpeed: 0.5,
   },
 }
+
+export const SCORING = {
+  red: {
+    fogKill: 3000,
+    crimsonBloom: -1500,
+  },
+  blue: {
+    startingPoints: 10000,
+    azureReveal: -2000,
+  },
+  yellow: {
+    inConePerSec: 200,
+    outConePerSec: -100,
+    amberBurst: -5000,
+    amberFogKill: 1000,
+  },
+  FOG_KILL_RADIUS: 20,
+} as const
+
+export const WARMUP = {
+  DURATION: 10,
+  SKULL_APPEAR_TIME: 5,
+} as const
+
+export const AVATARS = [
+  { id: 'tank-1', src: tank1 },
+  { id: 'tank-2', src: tank2 },
+  { id: 'healer-1', src: healer1 },
+  { id: 'healer-2', src: healer2 },
+  { id: 'dps-1', src: dps1 },
+  { id: 'dps-2', src: dps2 },
+  { id: 'dps-3', src: dps3 },
+  { id: 'dps-4', src: dps4 },
+  { id: 'dps-5', src: dps5 },
+  { id: 'dps-6', src: dps6 },
+] as const
+
+export const TIMER_THRESHOLDS = {
+  warningPercent: 0.30,
+  criticalPercent: 0.15,
+  pulseSeconds: 10,
+  shakeSeconds: 5,
+} as const

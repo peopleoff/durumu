@@ -7,6 +7,7 @@
 
       <div class="instructions">
         <template v-if="beam === 'red'">
+          <div class="controls-hint">Use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrow keys to move around the arena.</div>
           <div class="instruction-step">
             <span class="step-num">1</span>
             <p><strong>Sweep</strong> your beam around the arena to find 3 hidden <span class="highlight-red">Crimson Fogs</span>.</p>
@@ -26,32 +27,34 @@
         </template>
 
         <template v-if="beam === 'blue'">
+          <div class="controls-hint">Use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrow keys to move around the arena.</div>
           <div class="instruction-step">
             <span class="step-num">1</span>
-            <p>You control the blue beam. <span class="highlight-blue">Azure Fogs</span> are hidden on the platform.</p>
+            <p>You control the blue beam. A single <span class="highlight-blue">Azure Fog</span> is hidden on the platform.</p>
           </div>
           <div class="instruction-step">
             <span class="step-num">2</span>
-            <p><strong>AVOID</strong> shining your beam on them! Revealing an Azure Fog causes increasing raid damage.</p>
+            <p><strong>DO NOT</strong> shine your beam on it! Revealing it casts <span class="highlight-blue">Icy Grasp</span> on nearby players. If killed, <span class="highlight-blue">Flash Freeze</span> wipes the raid.</p>
           </div>
           <div class="instruction-step">
             <span class="step-num">3</span>
-            <p>Watch for periodic <strong>flash hints</strong> that briefly show fog locations.</p>
+            <p>Watch for periodic <strong>flash hints</strong> that briefly show the fog's location.</p>
           </div>
           <div class="instruction-step">
             <span class="step-num">4</span>
-            <p>Position your beam in a safe spot and <strong>stay relatively still</strong>. Survive the timer!</p>
+            <p><strong>Stay relatively still</strong> once you find a safe spot. Minimize beam movement!</p>
           </div>
         </template>
 
         <template v-if="beam === 'yellow'">
+          <div class="controls-hint">Use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrow keys to move around the arena.</div>
           <div class="instruction-step">
             <span class="step-num">1</span>
             <p>The <span class="highlight-yellow">yellow cone</span> moves on its own, rotating around the arena.</p>
           </div>
           <div class="instruction-step">
             <span class="step-num">2</span>
-            <p><strong>Follow it!</strong> Keep your cursor/finger <strong>inside the cone</strong> at all times.</p>
+            <p><strong>Follow it!</strong> Keep your character <strong>inside the cone</strong> at all times.</p>
           </div>
           <div class="instruction-step">
             <span class="step-num">3</span>
@@ -59,13 +62,13 @@
           </div>
           <div class="instruction-step">
             <span class="step-num">4</span>
-            <p>Maximize your time inside the cone to soak the damage for your raid.</p>
+            <p><strong>Heroic:</strong> 2 hidden <span class="highlight-yellow">Amber Fogs</span> lurk in the arena. If the cone reveals one, it triggers <span class="highlight-yellow">Burst of Amber</span> (raid wipe)!</p>
           </div>
         </template>
       </div>
 
       <button class="btn btn-lg start-btn" :class="`btn-${beam}`" @click="$emit('start')">
-        Ready!
+        Don't Disappoint Peg
       </button>
     </div>
   </div>
@@ -178,6 +181,29 @@ const icon = computed(() => {
 .highlight-red { color: var(--red-solid); font-weight: 600; }
 .highlight-blue { color: var(--blue-solid); font-weight: 600; }
 .highlight-yellow { color: var(--yellow-solid); font-weight: 600; }
+
+.controls-hint {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  padding: 6px 12px;
+  background: var(--bg-card);
+  border-radius: 8px;
+}
+
+.controls-hint kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  margin: 0 2px;
+  font-size: 0.8rem;
+  font-family: inherit;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
 
 .start-btn {
   width: 100%;

@@ -18,7 +18,7 @@ export function useBlueBeam() {
   const HINT_DURATION = 1.5
 
   function initialize() {
-    const positions = generateSpreadPositions(3, 0.3, 0.85)
+    const positions = generateSpreadPositions(1, 0.3, 0.85)
     fogs.value = positions.map((pos, i) => ({
       id: `azure-${i}`,
       type: 'azure' as const,

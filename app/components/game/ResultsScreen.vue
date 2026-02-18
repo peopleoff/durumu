@@ -1,11 +1,12 @@
 <template>
   <div class="results-overlay">
     <div class="results-card">
-      <h2 class="results-title">Light Spectrum Complete</h2>
+      <h2 class="results-title">Peg's Assessment</h2>
 
       <div class="grade-display" :class="`grade-${score.grade.toLowerCase()}`">
         {{ score.grade }}
       </div>
+      <p class="grade-mood" :class="`mood-${score.grade.toLowerCase()}`">{{ pegMood }}</p>
 
       <div class="stats">
         <div class="stat-item">
@@ -46,6 +47,14 @@
             <span class="stat-label">Cone Uptime</span>
             <span class="stat-value">{{ coneUptime }}%</span>
           </div>
+          <div class="stat-item">
+            <span class="stat-label">Amber Fogs Killed</span>
+            <span class="stat-value">{{ score.amberFogsKilled }}</span>
+          </div>
+          <div v-if="score.amberBursts > 0" class="stat-item">
+            <span class="stat-label">Burst of Amber</span>
+            <span class="stat-value text-danger">RAID WIPE</span>
+          </div>
         </template>
       </div>
 
@@ -55,10 +64,10 @@
 
       <div class="actions">
         <button class="btn btn-primary btn-lg" @click="$emit('retry')">
-          Try Again
+          Retry
         </button>
         <button class="btn" @click="$emit('menu')">
-          Back to Menu
+          Pick Another Beam
         </button>
       </div>
     </div>
@@ -79,6 +88,16 @@ defineEmits<{
 }>()
 
 const beamName = computed(() => BEAM_COLORS[props.score.beam].name)
+
+const pegMood = computed(() => {
+  switch (props.score.grade) {
+    case 'S': return '...Begrudgingly Impressed'
+    case 'A': return 'Mildly Content'
+    case 'B': return 'Visibly Sighing'
+    case 'C': return 'Deeply Disappointed'
+    case 'F': return 'Has Left Voice Chat'
+  }
+})
 
 const coneUptime = computed(() => {
   const total = props.score.timeInCone + props.score.timeOutOfCone
@@ -126,8 +145,20 @@ function formatTime(seconds: number): string {
   font-size: 5rem;
   font-weight: 900;
   line-height: 1;
+  margin-bottom: 6px;
+}
+
+.grade-mood {
+  font-size: 0.95rem;
+  font-style: italic;
   margin-bottom: 24px;
 }
+
+.mood-s { color: var(--grade-s); }
+.mood-a { color: var(--grade-a); }
+.mood-b { color: var(--grade-b); }
+.mood-c { color: var(--grade-c); }
+.mood-f { color: var(--grade-f); }
 
 .grade-s { color: var(--grade-s); text-shadow: 0 0 30px var(--grade-s); }
 .grade-a { color: var(--grade-a); text-shadow: 0 0 30px var(--grade-a); }
