@@ -393,6 +393,63 @@ export function useCanvasRenderer(canvasRef: Ref<HTMLCanvasElement | null>) {
     if ((fog.type === 'crimson' || fog.type === 'amber') && fog.health < fog.maxHealth) {
       drawHealthBar(pos, fog.health, fog.maxHealth, fogRadius)
     }
+
+    // Click indicator for crimson fogs
+    if (fog.type === 'crimson' && fog.revealed && !fog.killed) {
+      const killR = SCORING.FOG_KILL_RADIUS
+      ctx.save()
+      ctx.globalAlpha = 0.6 + Math.sin(elapsed * 8) * 0.3
+
+      // Crosshair ring — dark outline + white stroke
+      ctx.lineWidth = 4
+      ctx.strokeStyle = '#000'
+      ctx.beginPath()
+      ctx.arc(pos.x, pos.y, killR, 0, Math.PI * 2)
+      ctx.stroke()
+      ctx.lineWidth = 2
+      ctx.strokeStyle = '#fff'
+      ctx.beginPath()
+      ctx.arc(pos.x, pos.y, killR, 0, Math.PI * 2)
+      ctx.stroke()
+
+      // Tick marks (N/S/E/W) — dark outline + white
+      ctx.lineWidth = 4
+      ctx.strokeStyle = '#000'
+      ctx.beginPath()
+      ctx.moveTo(pos.x - killR - 4, pos.y)
+      ctx.lineTo(pos.x - killR + 6, pos.y)
+      ctx.moveTo(pos.x + killR - 6, pos.y)
+      ctx.lineTo(pos.x + killR + 4, pos.y)
+      ctx.moveTo(pos.x, pos.y - killR - 4)
+      ctx.lineTo(pos.x, pos.y - killR + 6)
+      ctx.moveTo(pos.x, pos.y + killR - 6)
+      ctx.lineTo(pos.x, pos.y + killR + 4)
+      ctx.stroke()
+      ctx.lineWidth = 2
+      ctx.strokeStyle = '#fff'
+      ctx.beginPath()
+      ctx.moveTo(pos.x - killR - 4, pos.y)
+      ctx.lineTo(pos.x - killR + 6, pos.y)
+      ctx.moveTo(pos.x + killR - 6, pos.y)
+      ctx.lineTo(pos.x + killR + 4, pos.y)
+      ctx.moveTo(pos.x, pos.y - killR - 4)
+      ctx.lineTo(pos.x, pos.y - killR + 6)
+      ctx.moveTo(pos.x, pos.y + killR - 6)
+      ctx.lineTo(pos.x, pos.y + killR + 4)
+      ctx.stroke()
+
+      // "CLICK!" label — white with dark outline
+      ctx.font = 'bold 10px -apple-system, sans-serif'
+      ctx.textAlign = 'center'
+      ctx.globalAlpha = 0.8 + Math.sin(elapsed * 8) * 0.2
+      ctx.strokeStyle = '#000'
+      ctx.lineWidth = 3
+      ctx.strokeText('CLICK!', pos.x, pos.y - killR - 8)
+      ctx.fillStyle = '#fff'
+      ctx.fillText('CLICK!', pos.x, pos.y - killR - 8)
+
+      ctx.restore()
+    }
   }
 
   function drawFogHint(dims: ArenaDimensions, position: PolarPosition, elapsed: number) {
@@ -412,7 +469,7 @@ export function useCanvasRenderer(canvasRef: Ref<HTMLCanvasElement | null>) {
     const barWidth = 30
     const barHeight = 4
     const x = pos.x - barWidth / 2
-    const y = pos.y - fogRadius - 10
+    const y = pos.y - fogRadius - 38
 
     // Background
     ctx.fillStyle = 'rgba(0, 0, 0, 0.6)'
@@ -590,7 +647,7 @@ export function useCanvasRenderer(canvasRef: Ref<HTMLCanvasElement | null>) {
     ctx.fillStyle = '#e0e0e8'
     ctx.shadowColor = '#8844cc'
     ctx.shadowBlur = 15
-    ctx.fillText(text, center.x, center.y + 50)
+    ctx.fillText(text, center.x, 80)
     ctx.restore()
   }
 
@@ -673,14 +730,35 @@ export function useCanvasRenderer(canvasRef: Ref<HTMLCanvasElement | null>) {
     if (fogInCone) {
       const killR = SCORING.FOG_KILL_RADIUS
       ctx.save()
-      ctx.strokeStyle = '#ff4444'
-      ctx.lineWidth = 2
       ctx.globalAlpha = 0.6 + Math.sin(elapsed * 8) * 0.3
 
-      // Crosshair
+      // Crosshair — dark outline + white stroke
+      ctx.lineWidth = 4
+      ctx.strokeStyle = '#000'
       ctx.beginPath()
       ctx.arc(pos.x, pos.y, killR, 0, Math.PI * 2)
       ctx.stroke()
+      ctx.lineWidth = 2
+      ctx.strokeStyle = '#fff'
+      ctx.beginPath()
+      ctx.arc(pos.x, pos.y, killR, 0, Math.PI * 2)
+      ctx.stroke()
+
+      // Tick marks — dark outline + white
+      ctx.lineWidth = 4
+      ctx.strokeStyle = '#000'
+      ctx.beginPath()
+      ctx.moveTo(pos.x - killR - 4, pos.y)
+      ctx.lineTo(pos.x - killR + 6, pos.y)
+      ctx.moveTo(pos.x + killR - 6, pos.y)
+      ctx.lineTo(pos.x + killR + 4, pos.y)
+      ctx.moveTo(pos.x, pos.y - killR - 4)
+      ctx.lineTo(pos.x, pos.y - killR + 6)
+      ctx.moveTo(pos.x, pos.y + killR - 6)
+      ctx.lineTo(pos.x, pos.y + killR + 4)
+      ctx.stroke()
+      ctx.lineWidth = 2
+      ctx.strokeStyle = '#fff'
       ctx.beginPath()
       ctx.moveTo(pos.x - killR - 4, pos.y)
       ctx.lineTo(pos.x - killR + 6, pos.y)
@@ -692,11 +770,14 @@ export function useCanvasRenderer(canvasRef: Ref<HTMLCanvasElement | null>) {
       ctx.lineTo(pos.x, pos.y + killR + 4)
       ctx.stroke()
 
-      // "CLICK!" label
+      // "CLICK!" label — white with dark outline
       ctx.font = 'bold 10px -apple-system, sans-serif'
       ctx.textAlign = 'center'
-      ctx.fillStyle = '#ff6644'
       ctx.globalAlpha = 0.8 + Math.sin(elapsed * 8) * 0.2
+      ctx.strokeStyle = '#000'
+      ctx.lineWidth = 3
+      ctx.strokeText('CLICK!', pos.x, pos.y - killR - 8)
+      ctx.fillStyle = '#fff'
       ctx.fillText('CLICK!', pos.x, pos.y - killR - 8)
 
       ctx.restore()

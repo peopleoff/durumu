@@ -2,25 +2,27 @@
 
 A browser-based practice tool for the **Light Spectrum (Colorblind) phase** from the Durumu the Forgotten encounter in World of Warcraft's Throne of Thunder raid (Mists of Pandaria).
 
+**[Play it live →](https://durumu.netlify.app/)**
+
 Practice beam mechanics so your raid leader doesn't have to yell at you again.
 
 ## How It Works
 
 Pick your raider avatar, choose a beam (or get one randomly assigned — just like in raid), and practice the mechanic until you can S-grade it.
 
-### Red Beam — Infrared Light (Melee DPS)
+### Red Beam — Infrared Light
 
 Sweep your beam around the arena to find and kill **3 hidden Crimson Fogs**. Hold the beam on a fog to drain its health. Moving the beam off a revealed fog triggers a **Crimson Bloom** (raid wipe). Kill all 3 as fast as possible.
 
 **S-grade:** 3 kills, 0 blooms, under 30 seconds.
 
-### Blue Beam — Blue Rays (Healer/Ranged)
+### Blue Beam — Blue Rays
 
 Avoid the single hidden **Azure Fog**. Hint flashes periodically reveal its location — use them to find a safe spot and stay there. Revealing the fog triggers **Icy Grasp**; revealing it too many times causes **Flash Freeze** (raid wipe).
 
 **S-grade:** 0 reveals for the full 50 seconds.
 
-### Yellow Beam — Bright Light (Tank)
+### Yellow Beam — Bright Light
 
 Stay inside an auto-rotating cone that spawns at your position and moves independently. Time outside the cone accumulates damage. Hidden **Amber Fogs** are revealed when the cone sweeps over them — click to kill them before the cone passes or trigger **Burst of Amber** (raid wipe).
 

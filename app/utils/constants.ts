@@ -64,25 +64,25 @@ export const GAME_CONFIGS: Record<BeamType, {
   yellowConeSpeed: number
 }> = {
   red: {
-    phaseDuration: 50,
+    phaseDuration: 30,
     coneWidth: Math.PI / 4.5,
     fogCount: 3,
     fogHealthDrainRate: 25,
     yellowConeSpeed: 0,
   },
   blue: {
-    phaseDuration: 50,
+    phaseDuration: 30,
     coneWidth: Math.PI / 4,
     fogCount: 1,
     fogHealthDrainRate: 0,
     yellowConeSpeed: 0,
   },
   yellow: {
-    phaseDuration: 50,
+    phaseDuration: 30,
     coneWidth: Math.PI / 3.5,
     fogCount: 2,
     fogHealthDrainRate: 0,
-    yellowConeSpeed: 0.5,
+    yellowConeSpeed: 0.10,
   },
 }
 

@@ -112,7 +112,7 @@ function goToMenu() {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px 16px 48px;
+  padding: 48px 16px;
   background: url('~/assets/images/background.png') center / cover no-repeat;
 }
 

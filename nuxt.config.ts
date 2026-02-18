@@ -1,13 +1,18 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
+
   future: {
     compatibilityVersion: 4,
   },
+
   ssr: false,
+
   components: [
     { path: '~/components', pathPrefix: false },
   ],
+
   css: ['~/assets/css/main.css'],
+
   app: {
     head: {
       title: 'Durumu Light Spectrum Trainer',
@@ -25,6 +30,14 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en',
       },
+    },
+  },
+
+  modules: ['@nuxt/fonts'],
+
+  fonts: {
+    defaults: {
+      weights: [400, 500, 600, 700],
     },
   },
 })

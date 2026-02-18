@@ -55,15 +55,6 @@ export function useYellowBeam() {
     // Auto-rotate cone
     cone.value.angle = normalizeAngle(cone.value.angle + coneSpeed * dt)
 
-    // Periodically change speed/direction
-    speedChangeTimer += dt
-    if (speedChangeTimer >= nextSpeedChange) {
-      speedChangeTimer = 0
-      nextSpeedChange = 4 + Math.random() * 6
-
-      coneSpeed = randomBetween(0.25, 0.75)
-    }
-
     // Decay damage flash
     if (damageFlash.value > 0) {
       damageFlash.value = Math.max(0, damageFlash.value - dt * 3)

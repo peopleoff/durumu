@@ -80,6 +80,18 @@ function update(dt: number) {
       inWarmup = false
       warmupRemaining.value = 0
       engine.elapsedTime.value = 0
+
+      // Initialize yellow beam at player's actual position after warmup
+      if (props.beam === 'yellow') {
+        yellowBeam.cone.value.angle = coneAngle
+      }
+      // Sync cone angle for red/blue so beam doesn't flash at angle 0
+      if (props.beam === 'red') {
+        redBeam.cone.value.angle = coneAngle
+      }
+      if (props.beam === 'blue') {
+        blueBeam.cone.value.angle = coneAngle
+      }
     }
     return
   }
